@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import Configuration from '../../Configuration';
 
 class Login extends Component {
+  constructor(props){
+    super(props)
+    this.state={}
+  }
+  componentDidMount(){
+    this.getUsers();
+  }
+
+  getUsers(){
+    axios.get(`${Configuration.apiServer}/api_v1/users/get-all`).then(resp => {
+      console.log(resp)
+    })
+  }
+
   render() {
     return (
       <div className="wrapper">
