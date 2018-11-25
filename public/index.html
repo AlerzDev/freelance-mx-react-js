@@ -18,7 +18,7 @@
     <link href="%PUBLIC_URL%/assets/css/blk-design-system.css?v=1.0.0" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="%PUBLIC_URL%/assets/demo/demo.css" rel="stylesheet" />
-    <title>React App</title>
+    <title>Freelance MX</title>
   </head>
   <body class="landing-page">
     <div id="root"></div>
@@ -40,20 +40,5 @@
     <script src="%PUBLIC_URL%/assets/demo/demo.js"></script>
     <!-- Control Center for Black UI Kit: parallax effects, scripts for the example pages etc -->
     <script src="%PUBLIC_URL%/assets/js/blk-design-system.min.js?v=1.0.0" type="text/javascript"></script>
-    <script>
-      $(document).ready(function() {
-        blackKit.initDatePicker();
-        blackKit.initSliders();
-      });
-
-      function scrollToDownload() {
-
-        if ($('.section-download').length != 0) {
-          $("html, body").animate({
-            scrollTop: $('.section-download').offset().top
-          }, 1000);
-        }
-      }
-    </script>
   </body>
 </html>

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from './components/home/home';
 import Login from './components/login/login';
+import LProyects from './components/projects/projects';
+import Proyects from './components/projects/projects';
 
 class App extends Component {
   acction(){
@@ -51,12 +53,6 @@ class App extends Component {
               <p className="d-lg-none d-xl-none">Facebook</p>
             </Link>
           </li>
-          <li className="nav-item p-0">
-            <Link className="nav-link" rel="tooltip" title="Follow us on Instagram" data-placement="bottom" to={"#"}>
-              <i className="fab fa-instagram"></i>
-              <p className="d-lg-none d-xl-none">Instagram</p>
-            </Link>
-          </li>
           <li className="nav-item">
             <Link to={"/"} className="nav-link">
                Inicio
@@ -64,17 +60,12 @@ class App extends Component {
           </li>
           <li className="nav-item">
             <Link to={"/login"} className="nav-link">
-               Iniciar sesión
+               Iniciar sesión / Registrate
             </Link>
           </li>
           <li className="nav-item">
-            <Link to={"#"} className="nav-link">
+            <Link to={"/proyects"} className="nav-link">
                Proyectos
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to={"#"} className="nav-link">
-               ¿Aun no tienes cuenta? Registrate Aquí.
             </Link>
           </li>
         </ul>
@@ -85,6 +76,7 @@ class App extends Component {
         <Switch>
             <Route exact path='/' component={Home} />
             <Route path='/login' component={Login} />
+            <Route path='/proyects' component={Proyects} />
         </Switch>
         </div>
       </Router>
