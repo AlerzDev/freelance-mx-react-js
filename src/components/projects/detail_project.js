@@ -11,14 +11,56 @@ class Proyects extends Component {
             idProject : id.Id,
             project : {},
             user : {},
-            offers:[]
+            offers:[],
+            session: {},
+            offer:{textCommentary:"",price:0},
+            message_error:"",
         };
     }
     componentDidMount(){
         this.getProject(this.state.idProject);
     }
+    onChangeComment = (event) => {
+        this.state.offer.textCommentary = event.target.value;
+    }
+    onChangePrice = (event) => {
+        this.state.offer.price = parseInt(event.target.value);
+    }
+    onClickSendOffer = (event) => {
+        var success = Object.keys(this.state.session).length === 0;
+        if(!success){
+            this.state.offer.idUser = this.state.session.id;
+            if(this.state.offer.price == 0)
+            {
+                this.setState({message_error:"Ingresa tu oferta monetaria."});
+            }else{
+                if(this.state.offer.textCommentary == ""){
+                    this.setState({message_error:"Ingresar la descripcion de tu oferta."});
+                }else{
+                    this.setState({message_error:""});
+                    axios.post(`${Configuration.apiServer}/api_v1/offers/insert`, this.state.offer).then(resp => {
+                        if(resp.data.success){
+                            this.setState({offer:{price:"",textCommentary:""}})
+                            this.getProject(this.state.idProject);
+                        }
+                    })
+                }
+            }
+        }else{
+            this.setState({message_error:"Inicia sesión para enviar tu oferta."});
+        }
+    }
     getProject(id)
     {
+        let value = localStorage.getItem("userSession");
+        var json = {};
+        try {
+            json = JSON.parse(value);
+            
+        } catch (e) {
+            console.log(e);
+        }
+        this.setState({session:json});
         axios.get(`${Configuration.apiServer}/api_v1/project/get-by-id/`+id).then(resp => {
             this.setState({project: resp.data.item});
         });
@@ -33,10 +75,8 @@ class Proyects extends Component {
                 axios.get(`${Configuration.apiServer}/api_v1/offers/get-by-id/`+item.idOffer).then(resp => {
                     var offer = resp.data.item;
                     axios.get(`${Configuration.apiServer}/api_v1/users/get-by-id/`+offer.idUser).then(respUser => {
-                        console.log(respUser)
                         offer.user = respUser.data.item;
                     });
-                    console.log(offer)
                     items.push(offer);
                 });
             });
@@ -126,20 +166,22 @@ class Proyects extends Component {
                                     </div>
                                     <div className="card-body">
                                         <h3><span>Envia tu oferta para postularte</span></h3>
+                                        <span>{this.state.message_error}</span>
                                         <form>
                                             <div className="form-group">
                                                 <label htmlFor="exampleFormControlInput1">Tu oferta de pago</label>
-                                                <input  className="form-control" id="exampleFormControlInput1" placeholder="$"/>
+                                                <input  onChange={this.onChangePrice}  className="form-control" id="exampleFormControlInput1" placeholder="$"/>
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="exampleFormControlTextarea1">Describe porque eres el indicado</label>
-                                                <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                            </div>
-                                            <div className="col-md-12 text-center">
-                                                <button className="btn btn-success">Enviar oferta</button>
+                                                <textarea  onChange={this.onChangeComment} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                             </div>
                                             
+                                            
                                         </form>
+                                        <div className="col-md-12 text-center">
+                                                <button onClick={this.onClickSendOffer} className="btn btn-success">Enviar oferta</button>
+                                            </div>
                                     </div>
                                 </div>
                             </div>

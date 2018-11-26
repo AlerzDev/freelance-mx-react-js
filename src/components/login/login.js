@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 class Login extends Component {
   constructor(props) {
     super(props)
-    this.state = { user: {}, access: false }
+    this.state = { user: {}, access: false, loginUser:{email:"",password:""},message_error:"" }
     this.handleName = this.handleName.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
@@ -15,6 +15,38 @@ class Login extends Component {
     this.handleType = this.handleType.bind(this);
     this.handleUser = this.handleUser.bind(this);
     this.access = this.access.bind(this);
+  }
+
+  onChangeEmail = (event) =>{
+    this.state.loginUser.email= event.target.value;
+  }
+  onChangePassword = (event) =>{
+    this.state.loginUser.password = event.target.value;
+  }
+  onClickLogIn = (event) =>{
+    if(this.state.loginUser.email == ""){
+      this.setState({message_error : "Se necesita el email"});
+    }else{
+      if(this.state.loginUser.password == ""){
+        this.setState({message_error : "Se necesita la contraseña"});
+      }else{
+        this.setState({message_error : ""});
+        axios.get(`${Configuration.apiServer}/api_v1/users/get-where?max=1&where=a.email='`+this.state.loginUser.email+"'").then(resp => {
+          if(resp.data.items.length > 0){
+            var user = resp.data.items[0];
+            if(user.password == this.state.loginUser.password){
+                this.setState({access: true})
+                localStorage.setItem("user", JSON.stringify(user));
+                this.props.initSession();
+            }else{
+              this.setState({message_error : "Credenciales incorrectas"});
+            }
+          }else{
+            this.setState({message_error : "El usuario no existe"});
+          }
+        });
+      }
+    }
   }
 
   handleName(event) {
@@ -46,7 +78,9 @@ class Login extends Component {
   }
 
   handleSave() {
-    axios.post(`${Configuration.apiServer}/api_v1/users/insert`, this.state.user).then(resp => {
+    axios.post(`${Configuration.apiServer}/api_v1/users/insert`,{headers: {
+      'Access-Control-Allow-Origin': '*',
+    }}, this.state.user).then(resp => {
       console.log(resp)
     })
   }
@@ -79,22 +113,15 @@ class Login extends Component {
                       <h6 className="card-title" style={{ color: "white" }}>Iniciar sesión</h6>
                     </div>
                     <div className="card-body">
+                      <span>{this.state.message_error}</span>
                       <form className="form">
-                        <div className="input-group">
-                          <div className="input-group-prepend">
-                            <div className="input-group-text">
-                              <i className="tim-icons icon-single-02" />
-                            </div>
-                          </div>
-                          <input type="text" className="form-control" placeholder="Nombre" />
-                        </div>
                         <div className="input-group">
                           <div className="input-group-prepend">
                             <div className="input-group-text">
                               <i className="tim-icons icon-email-85"></i>
                             </div>
                           </div>
-                          <input type="text" placeholder="Email" className="form-control" />
+                          <input type="text" placeholder="Email" className="form-control" onChange={this.onChangeEmail} />
                         </div>
                         <div className="input-group">
                           <div className="input-group-prepend">
@@ -102,18 +129,18 @@ class Login extends Component {
                               <i className="tim-icons icon-lock-circle"></i>
                             </div>
                           </div>
-                          <input type="text" className="form-control" placeholder="Password" />
+                          <input type="password" className="form-control" placeholder="Password" onChange={this.onChangePassword} />
                         </div>
 
                       </form>
                     </div>
                     <div className="card-footer">
                       <div id="square1" className="square square-1"></div>
-                      <a href="javascript:void(0)" className="btn btn-primary btn-round btn-lg">Ingresar</a>
+                      <button onClick={this.onClickLogIn} className="btn btn-primary btn-round btn-lg">Ingresar</button>
                     </div>
                     <FacebookLogin
                       register={false}
-                      text="Conectarse con Facebook"
+                      text=" Conectarse con Facebook"
                       size="small"
                       css="btn btn-info btn-round btn-lg"
                       access = {this.access}
@@ -137,7 +164,7 @@ class Login extends Component {
                               <i className="tim-icons icon-single-02" />
                             </div>
                           </div>
-                          <input type="text" className="form-control" placeholder="Nombre" onChange={this.handleName} />
+                          <input type="text" className="form-control" placeholder="Nombre completo" onChange={this.handleName} />
                         </div>
                         <div className="input-group">
                           <div className="input-group-prepend">
@@ -171,7 +198,7 @@ class Login extends Component {
                     </div>
                     <FacebookLogin
                       register = {true}
-                      text="Registrarse con Facebook"
+                      text=" Registrarse con Facebook"
                       size="small"
                       css="btn btn-info btn-round btn-lg"
 

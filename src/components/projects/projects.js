@@ -12,7 +12,6 @@ class Proyects extends Component {
             ,projects: []
             ,aux_projects: []
         };
-        
     }
     componentDidMount(){
         this.populateSelects();
