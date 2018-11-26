@@ -50,30 +50,35 @@ class Proyects extends Component {
     }
     render() {
         const listOffers = this.state.offers.map(item=>{
-            return(
-                <div key={item.id}  className="row">
-                    <div className="col-md-12 ml-auto mr-auto">
-                        <div className="card card-coin card-plain">
-                            <div className="card-body">
-                                <div className="row">
-                                    <div className="col-md-6 text-left">
-                                        <strong>Oferta del usuario </strong>{item.user.username}
+            if(item.user !=null)
+            {
+                return(
+                
+                    <div key={item.id}  className="row">
+                        <div className="col-md-12 ml-auto mr-auto">
+                            <div className="card card-coin card-plain">
+                                <div className="card-body">
+                                    <div className="row">
+                                        <div className="col-md-6 text-left">
+                                            <strong>Oferta del usuario </strong>{item.user.username}
+                                        </div>
+                                        <div className="col-md-6 text-right">
+                                            <strong>Oferta monetaria: </strong> ${item.price}
+                                        </div>
                                     </div>
-                                    <div className="col-md-6 text-right">
-                                        <strong>Oferta monetaria: </strong> ${item.price}
-                                    </div>
-                                </div>
-                                <br/>
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <strong>Descripción</strong><br/> {item.textCommentary}
+                                    <br/>
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <strong>Descripción</strong><br/> {item.textCommentary}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            );
+                );
+            }
+            
         })
         return (
         <div key={"id"} className="wrapper">
