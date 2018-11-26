@@ -78,9 +78,7 @@ class Login extends Component {
   }
 
   handleSave() {
-    axios.post(`${Configuration.apiServer}/api_v1/users/insert`,{headers: {
-      'Access-Control-Allow-Origin': '*',
-    }}, this.state.user).then(resp => {
+    axios.post(`${Configuration.apiServer}/api_v1/users/insert`, this.state.user).then(resp => {
       console.log(resp)
     })
   }

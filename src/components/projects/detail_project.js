@@ -38,7 +38,7 @@ class Proyects extends Component {
                     this.setState({message_error:"Ingresar la descripcion de tu oferta."});
                 }else{
                     this.setState({message_error:""});
-                    axios.post(`${Configuration.apiServer}/api_v1/offers/insert`, this.state.offer).then(resp => {
+                    axios.post(`${Configuration.apiServer}/api_v1/offers/insert?idProject=`+this.state.idProject, this.state.offer).then(resp => {
                         if(resp.data.success){
                             this.setState({offer:{price:"",textCommentary:""}})
                             this.getProject(this.state.idProject);
@@ -52,7 +52,7 @@ class Proyects extends Component {
     }
     getProject(id)
     {
-        let value = localStorage.getItem("userSession");
+        let value = localStorage.getItem("user");
         var json = {};
         try {
             json = JSON.parse(value);

@@ -9,20 +9,24 @@ import DetaildProject from './components/projects/detail_project';
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { login: true };
+    this.state = { login: false };
     this.handleLogout = this.handleLogout.bind(this);
     this.initSession = this.initSession.bind(this);
-    let value = localStorage.getItem("userSession");
+    
+    
+  }
+  componentDidMount(){
+    let value = localStorage.getItem("user");
     try {
         var json = JSON.parse(value);
-        var success = Object.keys(json).length === 0;
+        console.log(json)
+        var success = json === null;
         this.setState({login:!success});
         
     } catch (e) {
         console.log(e);
     }
-    
-  }
+ }
   acction() {
 
   }
@@ -113,9 +117,9 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route path='/proyects' component={Proyects} />
-              <Route path='/perfil' component={Perfil} />
               <Route path='/detaild-project' component={DetaildProject} props/>
               <Route path="/login" render={props => <Login initSession = {this.initSession} />} />
+              <Route path="/perfil" render={props => <Perfil handleLogout = {this.handleLogout} />} />
           </Switch>
           </div>
         </Router>
@@ -190,7 +194,8 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route path='/proyects' component={Proyects} />
-              <Route path='/perfil' component={Perfil} />
+              
+              <Route path="/perfil" render={props => <Perfil handleLogout = {this.handleLogout} />} />
               <Route path='/detaild-project' component={DetaildProject} props/>
               <Route path="/login" render={props => <Login initSession = {this.initSession} />} />
           </Switch>
