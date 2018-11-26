@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from './components/home/home';
 import Login from './components/login/login';
-import LProyects from './components/projects/projects';
 import Proyects from './components/projects/projects';
 import Perfil from './components/perfil/Perfil';
+import DetaildProject from './components/projects/detail_project';
 
 class App extends Component {
   constructor(props) {
@@ -103,7 +103,8 @@ class App extends Component {
             <Route path='/login' component={Login} />
             <Route path='/proyects' component={Proyects} />
             <Route path='/perfil' component={Perfil} />
-          </Switch>
+            <Route path='/detaild-project' component={DetaildProject} />
+        </Switch>
         </div>
       </Router>
     );
