@@ -190,9 +190,9 @@ class Login extends Component {
                           </div>
                           <input type="text" className="form-control" placeholder="Nombre Usuario" onChange={this.handleUser} />
                         </div>
-                        <select onChange={this.handleType}>
-                          <option value="1">Admin</option>
-                          <option value="3">Freelance</option>
+                        <select class="custom-select"  onChange={this.handleType}>
+                          <option style={{color: "black"}} value="1">Admin</option>
+                          <option style={{color: "black"}} value="3">Freelance</option>
                         </select>
                       </form>
                     </div>
